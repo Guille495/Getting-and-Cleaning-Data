@@ -1,5 +1,5 @@
 # =======================
-# NAME: run_analysis.R script
+# NAME: run_analysis.R script 
 # =======================
 # OBJECTIVE:
 # Create a tidy dataset based on the "Human Activity Recognition Using Smartphones" experiment data.
@@ -73,7 +73,7 @@ MergedDataset <- MergedDataset[ ,numeration]
 #---------------------------------------------------------------------------------------------------------------------------------------
 
 # 3. Use descriptive activity names to name the activities in the dataset:
-#       For this item, the «dplyr» package will be used. Namely, the mutate() + recode() functions, to redefine the values in the "V1.1" column,
+#       For this item, the Â«dplyrÂ» package will be used. Namely, the mutate() + recode() functions, to redefine the values in the "V1.1" column,
 #       from {1,2,3,4,5,6} to {WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING}, respectively.
 
 # RE-NAME ACTIVITIES IN 'MergedDataset' (second column of the dataset)
@@ -90,7 +90,7 @@ MergedDataset  <- mutate(MergedDataset, V1.1 = recode(MergedDataset$V1.1,"1"= "W
 #                      1. "[]" symbols indicate a text string which applies for all variables
 #                      2. "()" symbols indicate a text string which only applies for some variables
 #                      3. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply
-#                      4. "-" is meant to separate the "converted signal" being used (see «Instructions Expanded» 2.1.b) from the "calculation" being applied (see «Instructions Expanded» 2.1.c), 
+#                      4. "-" is meant to separate the "converted signal" being used (see Â«Instructions ExpandedÂ» 2.1.b) from the "calculation" being applied (see Â«Instructions ExpandedÂ» 2.1.c), 
 #                         or it can also indicate the axis (X/Y/Z) in a 3-axial variable (if applicable)
 #                      5. Examples:
 #                               -> tBodyAcc-mean()-X

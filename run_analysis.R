@@ -87,21 +87,23 @@ MergedDataset  <- mutate(MergedDataset, V1.1 = recode(MergedDataset$V1.1,"1"= "W
 #       In order to rename them, the following criteria will be applied:
 
 #               OLD NOMENCLATURE -> [t/f][converted signal]-[calculation] -(X/Y/Z)
-#                      1. "[]" symbols indicate a text string
-#                      2. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply
-#                      3. "-" is meant to separate the "converted signal" being used (see «Instructions Expanded» 2.1.b) from the "calculation" being applied (see «Instructions Expanded» 2.1.c), 
+#                      1. "[]" symbols indicate a text string which applies for all variables
+#                      2. "()" symbols indicate a text string which only applies for some variables
+#                      3. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply
+#                      4. "-" is meant to separate the "converted signal" being used (see «Instructions Expanded» 2.1.b) from the "calculation" being applied (see «Instructions Expanded» 2.1.c), 
 #                         or it can also indicate the axis (X/Y/Z) in a 3-axial variable (if applicable)
-#                      4. Examples:
+#                      5. Examples:
 #                               -> tBodyAcc-mean()-X
 #                               -> tBodyAcc-std()-X
 #                               -> fBodyAccMag-mean()
 #                               -> fBodyAccMag-std()
 
 #               NEW NOMENCLATURE -> [time/freq].[converted signal].(AxisX/AxisY/AxisZ).[calculation]
-#                      1. "[]" symbols indicate a text string
-#                      2. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply 
-#                      3. "." separates text strings
-#                      4. Examples (same as those of old nomenclature above):
+#                      1. "[]" symbols indicate a text string that appears for all variables
+#                      2. "()" symbols indicate a text string which only applies for some variables
+#                      3. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply 
+#                      4. "." separates text strings
+#                      5. Examples (same as those of old nomenclature above):
 #                               -> Time.BodyAcc.AxisX.Mean
 #                               -> Time.BodyAcc.AxisX.Std
 #                               -> Freq.BodyAccMag.Mean

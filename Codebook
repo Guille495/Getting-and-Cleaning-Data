@@ -1,0 +1,205 @@
+'GETTING AND CLEANING DATA' COURSE PROJECT CODEBOOK
+Guillermo Pereira, 17-Aug-2018
+----------------------------------------
+0. INDEX
+	1. Introduction
+	2. Objective 
+	3. Original data description
+	4. Tidy data description 
+	5. Variables' description and list 
+	6. Codebook version
+----------------
+1. INTRODUCTION
+----------------
+This codebook provides the details on the variables, data, and work performed in the "TidyDataset" dataset.
+The dataset is the result of a number of transformations to the experiment data from «Human Activity Recognition Using Smartphones Data Set».
+Information from the experiment:
+   1.1. Full description -> "Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012"
+   1.2. Website -> http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+   1.3. Original data -> https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+This work is performed as part of the requirements found in Coursera's «Getting and Cleaning Data» course project.
+----------------
+2. OBJECTIVE
+----------------
+The objective of the project is to present the experiment data in a format suitable for further analysis.
+This is based on the principles of tidy data outlined in Hadley Wickham's paper «Tidy data»	-> https://www.jstatsoft.org/article/view/v059i10
+Mainly, this entails the following items:
+	2.1. Each variable forms a column
+	2.2. Each observation forms a row
+	2.3. Each type of observational unit forms a table
+
+As such, a description on the original data is provided below, then the information on the transformations performed is provided, 
+and finally a list of all the variables available in the new tidy dataset.
+-----------------------------
+3. ORIGINAL DATA DESCRIPTION
+-----------------------------
+The original data was presented as follows:
+	3.1. "Test" directory 
+		3.1.1. Raw data obtained directly from experiment, all under the "Inertial signals" folder (i.e. "body_acc_x_test.txt", "body_acc_y_test.txt", "body_acc_z_test.txt", "body_gyro_x_test.txt", "body_gyro_y_test.txt", "body_gyro_z_test.txt", "total_acc_x_test.txt", "total_acc_y_test.txt", "total_acc_z_test.txt") 
+		3.1.2. Subject Ids for the experiment volunteers (i.e. "subject_test.txt")
+		3.1.3. Activity Ids for the different experiment activities performed (i.e. "y_test.txt")
+		3.1.4. Values obtained in the experiment (i.e. "X_test.txt")
+	
+	3.2. "Train" directory
+		3.2.1. Raw data obtained directly from experiment, all under the "Inertial signals" folder (i.e. "body_acc_x_train.txt", "body_acc_y_train.txt", "body_acc_z_train.txt", "body_gyro_x_train.txt", "body_gyro_y_train.txt", "body_gyro_z_train.txt", "total_acc_x_train.txt", "total_acc_y_train.txt", "total_acc_z_train.txt") 
+		3.2.2. Subject Ids for the experiment volunteers (i.e. "subject_train.txt")
+		3.2.3. Activity Ids for the different experiment activities performed (i.e. "y_train.txt")
+		3.2.4. Values obtained in the experiment (i.e. "X_test.txt")
+	
+	3.3. Labels of the experiment activities (i.e. "activity_labels.txt")
+	
+	3.4. Information on the transformations and calculations applied on the raw experiment data (i.e. "features_info.txt")
+			
+	3.5. Variables available in the datasets of the experiment (i.e. "features.txt")
+		
+NOTES. 
+The variables are a result of the following process: [raw signals] --> [converted signals] --> [calculated variables]
+That is, the raw data from the experiment was converted through a series of procedures (full details on the "features_info.txt", found in https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip).
+For every converted signals, a number of calculations were performed (independently), resulting in 561 variables presented in the "test" and "train" datasets.
+Also, values were normalized and bounded within [-1,1].
+-----------------------------
+4. TIDY DATA DESCRIPTION
+-----------------------------
+The data detailed in the previous section was transformed as follows:
+	4.1. Subject IDs, activity Ids, and values were column-bound for both the testing data, and the training data
+	4.2. The resulting "testing dataset" and "training dataset" were row-bound
+	4.3. Of the obtained merged dataset, only variables resulting from "mean()" and "standard_deviation()" calculations were kept
+	4.4. For the variable containing the experiment's activities' IDs as integers, these were substituted for character string IDs
+	4.5. For all variables, new nomenclature was implemented, as per the following details:
+		
+		OLD NOMENCLATURE -> [t/f][converted signal]-[calculation] -(X/Y/Z)
+			i. "[]" symbols indicate a text string which applies for all variables
+			ii. "()" symbols indicate a text string which only applies for some variables
+			iii. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply
+			iv. "-" is meant to separate the "converted signal" being used , or it can also indicate the axis (X/Y/Z) in a 3-axial variable (if applicable)
+			v. Examples:
+				-> tBodyAcc-mean()-X
+				-> tBodyAcc-std()-X
+				-> fBodyAccMag-mean()
+				-> fBodyAccMag-std()
+
+		NEW NOMENCLATURE -> [time/freq].[converted signal].(AxisX/AxisY/AxisZ).[calculation]
+			i. "[]" symbols indicate a text string that appears for all variables
+			ii. "()" symbols indicate a text string which only applies for some variables
+			iii. "/" indicates "OR", meaning that one of the options between "[]" or "()" will apply 
+			iv. "." separates text strings
+			v. Examples (same as those of old nomenclature above):
+				-> Time.BodyAcc.AxisX.Mean
+				-> Time.BodyAcc.AxisX.Std
+				-> Freq.BodyAccMag.Mean
+				-> Freq.BodyAccMag.Std
+
+		NOTE. This does not apply to the first two columns, namely "subjectID" and "activityID".
+		
+	4.6. A second, independent dataset was created, via:
+		4.6.1. Grouping data by subjectID and activityID
+		4.6.2. Summarizing the data by collapsing all matching {subject,activity} observations into one observation by calculating the "mean()" function
+		4.6.3. Adding the suffix ".SummaryAvg" to all variables (with the exception of "subjectID" and "activityID")
+		
+-----------------------------------
+5. VARIABLES' DESCRIPTION AND LIST
+-----------------------------------
+As previously mentioned, all variables were obtained from the experiment data from «Human Activity Recognition Using Smartphones Data Set».
+Full details on those variables is available in the "features_info.txt" (https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+The process, as aforementioned, was:
+
+	5.1. ORIGINAL DATA
+    5.1.1. Raw signals - signals obtained directly from experiments (via accelorometer + gyroscope in smartphones worn by experiment subjects) 
+    5.1.2. Converted signals:
+        i. 'Acceleration' signal split into 'body' and 'gravity acceleration' signals (e.g. tBodyAcc-XYZ, tGravityAcc-XYZ)
+        ii. 'Body-linear acceleration' and 'angular velocity' derived in time to obtain Jerk signals (e.g. tBodyAccJerk-XYZ, tBodyGyroJerk-XYZ)
+        iii. Magnitude of the aforementioned calculated via Euclidean norm (e.g. tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag)
+        iv. Fast Fourier Transform applied to some of the previously mentioned to obtain: fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag
+
+	5.1.3. Calculated variables - these were estimated based on the previously converted signals, by using the following calculations:
+		   Mean, standard deviation, median absolute deviation, largest value, smallest value, signal magnitude area, among several others.
+
+	In summary, there are 561 variables which are obtained by applying all the calculations in step 5.1.3 to all the converted signals obtained in 5.1.2.
+
+	5.2. TIDY DATA
+	Of the data described in section 5.1, only variables related to calculation of either mean() or standard_deviation() (abbreviated "sd()"), were retained.
+	This results in 68 variables ("subjectID", "activityID", and 66 other variables).
+	Also, these variables were renamed as detailed in steps 4.5 and 4.6.3.
+	
+		5.2.1 Variables' list
+			1. subjectID: Integer, ranges from 1:30 for every volunteer in the experiment, who performs the activities.
+			2. activityID: Character, possible values {"WALKING","WALKING_UPSTAIRS","WALKING_DOWNSTAIRS","SITTING","STANDING","LAYING"}
+				
+			All following variables are numerical, and in the range [-1,1] due to original data having been normalized.
+			3. Time.BodyAcc.AxisX.Mean.SummaryAvg
+			4. Time.BodyAcc.AxisY.Mean.SummaryAvg
+			5. Time.BodyAcc.AxisZ.Mean.SummaryAvg
+			6. Time.BodyAcc.AxisX.Std.SummaryAvg
+			7. Time.BodyAcc.AxisY.Std.SummaryAvg
+			8. Time.BodyAcc.AxisZ.Std.SummaryAvg
+			9. Time.GravityAcc.AxisX.Mean.SummaryAvg
+			10. Time.GravityAcc.AxisY.Mean.SummaryAvg
+			11. Time.GravityAcc.AxisZ.Mean.SummaryAvg
+			12. Time.GravityAcc.AxisX.Std.SummaryAvg
+			13. Time.GravityAcc.AxisY.Std.SummaryAvg
+			14. Time.GravityAcc.AxisZ.Std.SummaryAvg
+			15. Time.BodyAccJerk.AxisX.Mean.SummaryAvg
+			16. Time.BodyAccJerk.AxisY.Mean.SummaryAvg
+			17. Time.BodyAccJerk.AxisZ.Mean.SummaryAvg
+			18. Time.BodyAccJerk.AxisX.Std.SummaryAvg
+			19. Time.BodyAccJerk.AxisY.Std.SummaryAvg
+			20. Time.BodyAccJerk.AxisZ.Std.SummaryAvg
+			21. Time.BodyGyro.AxisX.Mean.SummaryAvg
+			22. Time.BodyGyro.AxisY.Mean.SummaryAvg
+			23. Time.BodyGyro.AxisZ.Mean.SummaryAvg
+			24. Time.BodyGyro.AxisX.Std.SummaryAvg
+			25. Time.BodyGyro.AxisY.Std.SummaryAvg
+			26. Time.BodyGyro.AxisZ.Std.SummaryAvg
+			27. Time.BodyGyroJerk.AxisX.Mean.SummaryAvg
+			28. Time.BodyGyroJerk.AxisY.Mean.SummaryAvg
+			29. Time.BodyGyroJerk.AxisZ.Mean.SummaryAvg
+			30. Time.BodyGyroJerk.AxisX.Std.SummaryAvg
+			31. Time.BodyGyroJerk.AxisY.Std.SummaryAvg
+			32. Time.BodyGyroJerk.AxisZ.Std.SummaryAvg
+			33. Time.BodyAccMag.Mean.SummaryAvg
+			34. Time.BodyAccMag.Std.SummaryAvg
+			35. Time.GravityAccMag.Mean.SummaryAvg
+			36. Time.GravityAccMag.Std.SummaryAvg
+			37. Time.BodyAccJerkMag.Mean.SummaryAvg
+			38. Time.BodyAccJerkMag.Std.SummaryAvg
+			39. Time.BodyGyroMag.Mean.SummaryAvg
+			40. Time.BodyGyroMag.Std.SummaryAvg
+			41. Time.BodyGyroJerkMag.Mean.SummaryAvg
+			42. Time.BodyGyroJerkMag.Std.SummaryAvg
+			43. Freq.BodyAccAxisX.Mean.SummaryAvg
+			44. Freq.BodyAccAxisY.Mean.SummaryAvg
+			45. Freq.BodyAccAxisZ.Mean.SummaryAvg
+			46. Freq.BodyAccAxisX.Std.SummaryAvg
+			47. Freq.BodyAccAxisY.Std.SummaryAvg
+			48. Freq.BodyAccAxisZ.Std.SummaryAvg
+			49. Freq.BodyAccJerkAxisX.Mean.SummaryAvg
+			50. Freq.BodyAccJerkAxisY.Mean.SummaryAvg
+			51. Freq.BodyAccJerkAxisZ.Mean.SummaryAvg
+			52. Freq.BodyAccJerkAxisX.Std.SummaryAvg
+			53. Freq.BodyAccJerkAxisY.Std.SummaryAvg
+			54. Freq.BodyAccJerkAxisZ.Std.SummaryAvg
+			55. Freq.BodyGyroAxisX.Mean.SummaryAvg
+			56. Freq.BodyGyroAxisY.Mean.SummaryAvg
+			57. Freq.BodyGyroAxisZ.Mean.SummaryAvg
+			58. Freq.BodyGyroAxisX.Std.SummaryAvg
+			59. Freq.BodyGyroAxisY.Std.SummaryAvg
+			60. Freq.BodyGyroAxisZ.Std.SummaryAvg
+			61. Freq.BodyAccMag.Mean.SummaryAvg
+			62. Freq.BodyAccMag.Std.SummaryAvg
+			63. Freq.BodyAccJerkMag.Mean.SummaryAvg
+			64. Freq.BodyAccJerkMag.Std.SummaryAvg
+			65. Freq.BodyGyroMag.Mean.SummaryAvg
+			66. Freq.BodyGyroMag.Std.SummaryAvg
+			67. Freq.BodyGyroJerkMag.Mean.SummaryAvg
+			68. Freq.BodyGyroJerkMag.Std.SummaryAvg
+
+	For a detailed summary of what each variable entails, please refer to sections 5.1.2, 5.1.3, and 4.6.
+		
+-----------------------------------
+6. CODEBOOK VERSION
+-----------------------------------
+Version 1.0.0
+August 17th, 2018
+Author: Guillermo Pereira
+-----------------------------------
